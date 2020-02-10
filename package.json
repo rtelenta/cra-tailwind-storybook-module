@@ -19,7 +19,8 @@
   "scripts": {
     "start": "start-storybook -p 9009 -s public",
     "test": "react-scripts test",
-    "build:css": "node ./scripts/run-sass.js && node ./scripts/run-postCss.js",
+    "build:mainjs": "node ./scripts/create-main-js.js",
+    "build:css": "node ./scripts/run-sass.js && node ./scripts/run-post-css.js",
     "build:js": "cross-env BABEL_ENV=production babel src/components --out-dir dist --extensions \".ts,.tsx\" --ignore \"src/**/*.test.tsx\" --no-copy-ignored --copy-files",
     "build": "rimraf dist && yarn build:js && yarn build:css",
     "build-storybook": "build-storybook -s public"
@@ -29,8 +30,13 @@
   },
   "babel": {
     "presets": [
-      "react-app",
-      "@babel/preset-typescript"
+      [
+        "react-app",
+        {
+          "flow": false,
+          "typescript": true
+        }
+      ]
     ]
   },
   "files": [

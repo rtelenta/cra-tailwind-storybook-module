@@ -1,5 +1,5 @@
 const postcss = require("postcss");
-const fs = require("fs");
+const { readFile, writeFile, unlinkSync } = require("fs");
 const tailwindcss = require("tailwindcss");
 const autoprefixer = require("autoprefixer");
 const purgecss = require("@fullhuman/postcss-purgecss")({
@@ -17,17 +17,24 @@ const purgecss = require("@fullhuman/postcss-purgecss")({
   defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
 });
 
-const inFile = __dirname + "./../dist/global.css";
-const outFile = __dirname + "./../global.css";
+const inFile = "./dist/global.css";
+const outFile = "./global.css";
 
-fs.readFile(inFile, (err, css) => {
-  postcss([tailwindcss, autoprefixer, purgecss])
-    .process(css, {
-      from: inFile,
-      to: outFile
-    })
-    .then(result => {
-      fs.writeFile(outFile, result.css, () => true);
-      fs.unlinkSync(inFile);
-    });
+readFile(inFile, (err, css) => {
+  if (!err) {
+    postcss([tailwindcss, autoprefixer, purgecss])
+      .process(css, {
+        from: inFile,
+        to: outFile
+      })
+      .then(result => {
+        writeFile(outFile, result.css, () => true);
+        unlinkSync(inFile);
+      })
+      .catch(err => {
+        throw err;
+      });
+  } else {
+    throw err;
+  }
 });
