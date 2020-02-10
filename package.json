@@ -1,7 +1,7 @@
 {
   "name": "cra-tailwind-storybook-module",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -10,20 +10,32 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.3.1",
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "start-storybook -p 9009 -s public",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build:css": "node ./scripts/run-sass.js && node ./scripts/run-postCss.js",
+    "build:js": "cross-env BABEL_ENV=production babel src/components --out-dir dist --extensions \".ts,.tsx\" --ignore \"src/**/*.test.tsx\" --no-copy-ignored --copy-files",
+    "build": "rimraf dist && yarn build:js && yarn build:css",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
+  "babel": {
+    "presets": [
+      "react-app",
+      "@babel/preset-typescript"
+    ]
+  },
+  "files": [
+    "dist"
+  ],
   "browserslist": {
     "production": [
       ">0.2%",
@@ -35,5 +47,21 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
+    "@fullhuman/postcss-purgecss": "^2.0.6",
+    "@storybook/addon-actions": "^5.3.12",
+    "@storybook/addon-links": "^5.3.12",
+    "@storybook/addons": "^5.3.12",
+    "@storybook/preset-create-react-app": "^1.5.2",
+    "@storybook/react": "^5.3.12",
+    "autoprefixer": "^9.7.4",
+    "cross-env": "^7.0.0",
+    "postcss": "^7.0.26",
+    "postcss-loader": "^3.0.0",
+    "rimraf": "^3.0.2",
+    "tailwindcss": "^1.2.0"
   }
 }
