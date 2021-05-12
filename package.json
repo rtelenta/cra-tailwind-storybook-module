@@ -65,7 +65,7 @@
     "@storybook/react": "^5.3.12",
     "autoprefixer": "^9.7.4",
     "cross-env": "^7.0.0",
-    "postcss": "^7.0.26",
+    "postcss": "^8.2.10",
     "postcss-loader": "^3.0.0",
     "rimraf": "^3.0.2",
     "tailwindcss": "^1.2.0"
